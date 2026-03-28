@@ -101,10 +101,10 @@ The program provides a main menu with two options:
 
 - Set number of trials (n) and probability (p)
 - Choose from 5 query types:
-  1. Exactly k successes: P(X = k)
-  2. At most k successes: P(X ≤ k)
-  3. At least k successes: P(X ≥ k)
-  4. Between k₁ and k₂: P(k₁ ≤ X ≤ k₂)
+  1. Exactly r successes: P(X = r)
+  2. At most r successes: P(X ≤ r)
+  3. At least r successes: P(X ≥ r)
+  4. Between r₁ and r₂: P(r₁ ≤ X ≤ r₂)
   5. Full distribution table
 
 ## 📚 Core Concepts
@@ -127,7 +127,7 @@ A binomial distribution models the number of successes in a fixed number of inde
 **Probability Mass Function (PMF):**
 
 ```
-P(X = k) = C(n, k) · p^k · (1-p)^(n-k)
+P(X = r) = C(n, r) · p^r · (1-p)^(n-r)
 ```
 
 **Mean (Expected Value):**
@@ -186,10 +186,10 @@ C(n, r) = n! / (r! × (n-r)!)
 
 ### Binomial Statistics
 
-#### `pmf(n, p, k)`
+#### `pmf(n, p, r)`
 
-- **Description:** Calculate probability mass function P(X = k)
-- **Parameters:** n (int trials), p (float, success probability), k (int, successes)
+- **Description:** Calculate probability mass function P(X = r)
+- **Parameters:** n (int trials), p (float, success probability), r (int, successes)
 - **Returns:** float (probability)
 
 #### `binomial_mean(n, p)`
@@ -212,24 +212,24 @@ C(n, r) = n! / (r! × (n-r)!)
 
 ### Probability Queries
 
-#### `prob_exact(n, p, k)`
+#### `prob_exact(n, p, r)`
 
-- **Description:** Calculate P(X = k)
+- **Description:** Calculate P(X = r)
 - **Returns:** float
 
-#### `prob_at_most(n, p, k)`
+#### `prob_at_most(n, p, r)`
 
-- **Description:** Calculate P(X ≤ k)
+- **Description:** Calculate P(X ≤ r)
 - **Returns:** float
 
-#### `prob_at_least(n, p, k)`
+#### `prob_at_least(n, p, r)`
 
-- **Description:** Calculate P(X ≥ k)
+- **Description:** Calculate P(X ≥ r)
 - **Returns:** float
 
-#### `prob_between(n, p, k1, k2)`
+#### `prob_between(n, p, r1, r2)`
 
-- **Description:** Calculate P(k₁ ≤ X ≤ k₂)
+- **Description:** Calculate P(r₁ ≤ X ≤ r₂)
 - **Returns:** float
 
 ### Display Functions
@@ -282,14 +282,6 @@ P(X ≤ 2) = P(X=0) + P(X=1) + P(X=2)
          = 0.924443  ≈  92.44%
 ```
 
-### Example 4: Dice Rolls
-
-Built-in example that demonstrates:
-
-- 5 dice rolls where rolling a prime (2, 3, or 5) = success
-- Probability p = 3/6 = 0.5
-- Calculates various probability queries
-
 ## 📋 Requirements
 
 - **Python:** 3.6+
@@ -306,7 +298,7 @@ The code is modular and can be imported into other Python projects:
 from bino import prob_exact, binomial_mean, combination
 
 # Use as a library
-p = prob_exact(n=10, p=0.5, k=5)
+p = prob_exact(n=10, p=0.5, r=5)
 mean = binomial_mean(10, 0.5)
 c = combination(10, 5)
 ```
@@ -325,7 +317,7 @@ c = combination(10, 5)
   3. Probability of success (p) is constant across all trials.
   4. Trials are mutually independent of each other.
   5. Random variable X counts total successes in n trials.
-  6. X ~ B(n, p) → PMF: P(X=k) = C(n,k) · p^k · q^(n-k)
+  6. X ~ B(n, p) → PMF: P(X=r) = C(n,r) · p^r · q^(n-r)
 
   Setup: X ~ B(5, 0.5)   q = 0.5000
   Mean (μ)           = n·p        = 5·0.5 = 2.5000
