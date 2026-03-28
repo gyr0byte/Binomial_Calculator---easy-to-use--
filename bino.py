@@ -230,8 +230,7 @@ def main():
     print_separator()
     print("   1. Permutation & Combination (P and C)")
     print("   2. Binomial Experiment Solver")
-    print("   3. Dice example  — 5 rolls, prime = success")
-    choice = get_int("  Select (1-3): ", lo=1, hi=3)
+    choice = get_int("  Select (1-2): ", lo=1, hi=2)
 
     if choice == 1:
         n = get_int("\n  Enter n: ", lo=0)
@@ -242,31 +241,6 @@ def main():
 
     elif choice == 2:
         binomial_menu()
-
-    else:
-        # ── built-in dice example ─────────────────────────────────────────
-        print_separator()
-        print("  EXAMPLE: Dice rolled 5 times, prime number = success")
-        print("  Primes on a die: {2, 3, 5}  →  p = 3/6 = 0.5")
-        print_separator()
-        n, p = 5, 0.5
-
-        print_stats(n, p, "X ~ B(5, 0.5)")
-        # at most 4
-        prob_le4 = prob_at_most(n, p, 4)
-        print(f"\n  P(X <= 4)  — at most 4 successes")
-        print(f"  = 1 - P(X=5) = 1 - C(5,5)·(0.5)^5·(0.5)^0")
-        print(f"  = 1 - {pmf(n,p,5):.6f} = {prob_le4:.6f}  ≈  {prob_le4*100:.2f}%")
-
-        # exactly 2
-        prob_eq2 = prob_exact(n, p, 2)
-        c52 = combination(5, 2)
-        print(f"\n  P(X = 2)   — exactly 2 successes")
-        print(f"  = C(5,2)·(0.5)^2·(0.5)^3")
-        print(f"  = {c52}·{0.5**2:.4f}·{0.5**3:.4f} = {prob_eq2:.6f}  ≈  {prob_eq2*100:.2f}%")
-
-        print(f"\n  Full distribution:")
-        print_distribution(n, p)
 
     print()
     print_separator()
