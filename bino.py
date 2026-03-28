@@ -27,9 +27,9 @@ def combination_fraction(n, r):
     g = gcd(num, den)
     return (num // g, den // g)
 
-def pmf(n, p, k):
-    """P(X = k) for X ~ B(n, p)"""
-    return combination(n, k) * (p ** k) * ((1 - p) ** (n - k))
+def pmf(n, p, r):
+    """P(X = r) for X ~ B(n, p)"""
+    return combination(n, r) * (p ** r) * ((1 - p) ** (n - r))
 
 
 # ── binomial stats ────────────────────────────────────────────────────────────
@@ -46,21 +46,21 @@ def binomial_std(n, p):
 
 # ── probability queries ───────────────────────────────────────────────────────
 
-def prob_exact(n, p, k):
-    """P(X = k)"""
-    return pmf(n, p, k)
+def prob_exact(n, p, r):
+    """P(X = r)"""
+    return pmf(n, p, r)
 
-def prob_at_most(n, p, k):
-    """P(X <= k)"""
-    return sum(pmf(n, p, i) for i in range(k + 1))
+def prob_at_most(n, p, r):
+    """P(X <= r)"""
+    return sum(pmf(n, p, i) for i in range(r + 1))
 
-def prob_at_least(n, p, k):
-    """P(X >= k)"""
-    return sum(pmf(n, p, i) for i in range(k, n + 1))
+def prob_at_least(n, p, r):
+    """P(X >= r)"""
+    return sum(pmf(n, p, i) for i in range(r, n + 1))
 
-def prob_between(n, p, k1, k2):
-    """P(k1 <= X <= k2)"""
-    lo, hi = min(k1, k2), max(k1, k2)
+def prob_between(n, p, r1, r2):
+    """P(r1 <= X <= r2)"""
+    lo, hi = min(r1, r2), max(r1, r2)
     return sum(pmf(n, p, i) for i in range(lo, hi + 1))
 
 
@@ -70,14 +70,14 @@ def print_separator(char="─", width=60):
     print(char * width)
 
 def print_distribution(n, p):
-    print("\n  k   C(n,k)       P(X=k)      P(X<=k)")
+    print("\n  r   C(n,r)       P(X=r)      P(X<=r)")
     print("  " + "─" * 45)
     cumulative = 0
-    for k in range(n + 1):
-        c = combination(n, k)
-        prob = pmf(n, p, k)
+    for r in range(n + 1):
+        c = combination(n, r)
+        prob = pmf(n, p, r)
         cumulative += prob
-        print(f"  {k:2d}   {c:6d}    {prob:10.6f}    {min(cumulative, 1):.6f}")
+        print(f"  {r:2d}   {c:6d}    {prob:10.6f}    {min(cumulative, 1):.6f}")
 
 def print_features():
     print_separator()
@@ -89,7 +89,7 @@ def print_features():
         "Probability of success (p) is constant across all trials.",
         "Trials are mutually independent of each other.",
         "Random variable X counts total successes in n trials.",
-        "X ~ B(n, p)  →  PMF: P(X=k) = C(n,k) · p^k · q^(n-k)",
+        "X ~ B(n, p)  →  PMF: P(X=r) = C(n,r) · p^r · q^(n-r)",
     ]
     for i, f in enumerate(features, 1):
         print(f"  {i}. {f}")
@@ -160,59 +160,59 @@ def binomial_menu():
     print_stats(n, p)
 
     print("\n  Query type:")
-    print("   1. Exactly k successes       P(X = k)")
-    print("   2. At most k successes       P(X <= k)")
-    print("   3. At least k successes      P(X >= k)")
-    print("   4. Between k1 and k2         P(k1 <= X <= k2)")
+    print("   1. Exactly r successes       P(X = r)")
+    print("   2. At most r successes       P(X <= r)")
+    print("   3. At least r successes      P(X >= r)")
+    print("   4. Between r1 and r2         P(r1 <= X <= r2)")
     print("   5. Full distribution table")
     choice = get_int("  Select (1-5): ", lo=1, hi=5)
 
     print()
     if choice == 1:
-        k = get_int(f"  Enter k (0–{n}): ", lo=0, hi=n)
-        prob = prob_exact(n, p, k)
-        c = combination(n, k)
-        print(f"\n  P(X = {k}) = C({n},{k}) · {p}^{k} · {q:.4f}^{n-k}")
-        print(f"           = {c} · {p**k:.6f} · {q**(n-k):.6f}")
+        r = get_int(f"  Enter r (0–{n}): ", lo=0, hi=n)
+        prob = prob_exact(n, p, r)
+        c = combination(n, r)
+        print(f"\n  P(X = {r}) = C({n},{r}) · {p}^{r} · {q:.4f}^{n-r}")
+        print(f"           = {c} · {p**r:.6f} · {q**(n-r):.6f}")
         print(f"           = {prob:.6f}  ≈  {prob*100:.2f}%")
-        print_stats(n, p, f"P(X = {k})")
+        print_stats(n, p, f"P(X = {r})")
 
     elif choice == 2:
-        k = get_int(f"  Enter k (0–{n}): ", lo=0, hi=n)
-        print(f"\n  P(X <= {k}) = Σ P(X=i) for i = 0..{k}")
+        r = get_int(f"  Enter r (0–{n}): ", lo=0, hi=n)
+        print(f"\n  P(X <= {r}) = Σ P(X=i) for i = 0..{r}")
         total = 0
-        for i in range(k + 1):
+        for i in range(r + 1):
             pi = pmf(n, p, i)
             total += pi
             print(f"    P(X={i}) = {pi:.6f}")
         print(f"  ─────────────────────────")
-        print(f"  P(X <= {k}) = {total:.6f}  ≈  {total*100:.2f}%")
-        print_stats(n, p, f"P(X ≤ {k})")
+        print(f"  P(X <= {r}) = {total:.6f}  ≈  {total*100:.2f}%")
+        print_stats(n, p, f"P(X ≤ {r})")
 
     elif choice == 3:
-        k = get_int(f"  Enter k (0–{n}): ", lo=0, hi=n)
-        print(f"\n  P(X >= {k}) = Σ P(X=i) for i = {k}..{n}")
+        r = get_int(f"  Enter r (0–{n}): ", lo=0, hi=n)
+        print(f"\n  P(X >= {r}) = Σ P(X=i) for i = {r}..{n}")
         total = 0
-        for i in range(k, n + 1):
+        for i in range(r, n + 1):
             pi = pmf(n, p, i)
             total += pi
             print(f"    P(X={i}) = {pi:.6f}")
         print(f"  ─────────────────────────")
-        print(f"  P(X >= {k}) = {total:.6f}  ≈  {total*100:.2f}%")
-        print_stats(n, p, f"P(X ≥ {k})")
+        print(f"  P(X >= {r}) = {total:.6f}  ≈  {total*100:.2f}%")
+        print_stats(n, p, f"P(X ≥ {r})")
 
     elif choice == 4:
-        k1 = get_int(f"  Enter k1 (0–{n}): ", lo=0, hi=n)
-        k2 = get_int(f"  Enter k2 ({k1}–{n}): ", lo=k1, hi=n)
-        print(f"\n  P({k1} <= X <= {k2}) = Σ P(X=i) for i = {k1}..{k2}")
+        r1 = get_int(f"  Enter r1 (0–{n}): ", lo=0, hi=n)
+        r2 = get_int(f"  Enter r2 ({r1}–{n}): ", lo=r1, hi=n)
+        print(f"\n  P({r1} <= X <= {r2}) = Σ P(X=i) for i = {r1}..{r2}")
         total = 0
-        for i in range(k1, k2 + 1):
+        for i in range(r1, r2 + 1):
             pi = pmf(n, p, i)
             total += pi
             print(f"    P(X={i}) = {pi:.6f}")
         print(f"  ─────────────────────────")
-        print(f"  P({k1} <= X <= {k2}) = {total:.6f}  ≈  {total*100:.2f}%")
-        print_stats(n, p, f"P({k1} ≤ X ≤ {k2})")
+        print(f"  P({r1} <= X <= {r2}) = {total:.6f}  ≈  {total*100:.2f}%")
+        print_stats(n, p, f"P({r1} ≤ X ≤ {r2})")
 
     else:
         print_distribution(n, p)
