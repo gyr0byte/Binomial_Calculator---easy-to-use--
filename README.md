@@ -30,7 +30,6 @@ A comprehensive Python tool for calculating probabilities, permutations, combina
 
 ### 3. **Educational Features**
 
-- Built-in example: Dice roll probability calculation
 - Clear mathematical formulas displayed with calculations
 - Detailed step-by-step breakdowns
 - Properties of binomial experiments explained
@@ -78,7 +77,7 @@ python bino.py
 python bino.py
 ```
 
-The program provides a main menu with three options:
+The program provides a main menu with two options:
 
 ```
 ═════════════════════════════════════════════════════
@@ -89,7 +88,6 @@ The program provides a main menu with three options:
   ────────────────────────────────────────────────────────
    1. Permutation & Combination (P and C)
    2. Binomial Experiment Solver
-   3. Dice example  — 5 rolls, prime = success
 ```
 
 ### Menu Options
@@ -108,12 +106,6 @@ The program provides a main menu with three options:
   3. At least k successes: P(X ≥ k)
   4. Between k₁ and k₂: P(k₁ ≤ X ≤ k₂)
   5. Full distribution table
-
-#### Option 3: Built-in Example
-
-- Demonstrates probability calculation for dice rolls
-- Shows how primes (2, 3, 5) define success
-- Calculates P(X ≤ 4) and P(X = 2) automatically
 
 ## 📚 Core Concepts
 
