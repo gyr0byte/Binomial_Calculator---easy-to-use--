@@ -252,7 +252,6 @@ def main():
         n, p = 5, 0.5
 
         print_stats(n, p, "X ~ B(5, 0.5)")
-
         # at most 4
         prob_le4 = prob_at_most(n, p, 4)
         print(f"\n  P(X <= 4)  — at most 4 successes")
